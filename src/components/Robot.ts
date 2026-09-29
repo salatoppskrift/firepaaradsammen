@@ -1,7 +1,8 @@
-import { dropPiece } from "./Board";
+import { BoardClass } from "./Board";
 import type { Board, Player } from "../types";
-export function chooseRobotColumn(board: Board): number | null {
+export function chooseRobotColumn(board: BoardClass): number | null {
     const legalColumns = getLegalColumns(board);
+    console.log(board);
 
     if (legalColumns.length === 0) return null;
 
@@ -9,7 +10,7 @@ export function chooseRobotColumn(board: Board): number | null {
     for (const column of legalColumns) {
         const testBoard = structuredClone(board);
 
-        dropPiece(testBoard, column, "yellow");
+        testBoard.dropPiece(column, "yellow");       // 2 parametre, ikke 3
 
         if (hasWon(testBoard, "yellow")) {
             return column;
@@ -20,7 +21,7 @@ export function chooseRobotColumn(board: Board): number | null {
     for (const column of legalColumns) {
         const testBoard = structuredClone(board);
 
-        dropPiece(testBoard, column, "red");
+        testBoard.dropPiece(column, "red");
 
         if (hasWon(testBoard, "red")) {
             return column;
@@ -37,7 +38,8 @@ export function chooseRobotColumn(board: Board): number | null {
     function preferredColumns(columnArray : number[]) {return columnArray.find(column => legalColumns.includes(column)) ?? legalColumns[0]};
 }
 
-export function hasWon(board: Board, player: Player): boolean {
+// Board?
+export function hasWon(board: BoardClass, player: Player): boolean {
     const directions = [
         [0, 1],
         [1, 0],
@@ -47,7 +49,7 @@ export function hasWon(board: Board, player: Player): boolean {
 
     for (let row = 0; row < 6; row++) {
         for (let column = 0; column < 7; column++) {
-            if (board[row][column] !== player) continue;
+            if (board.getBoardPosition(row, column) !== player) continue;
 
             for (const [rowDirection, columnDirection] of directions) {
                 let count = 1;
@@ -58,7 +60,7 @@ export function hasWon(board: Board, player: Player): boolean {
 
                     if (nextRow < 0 || nextRow >= 6) break;
                     if (nextColumn < 0 || nextColumn >= 7) break;
-                    if (board[nextRow][nextColumn] !== player) break;
+                    if (board.getBoardPosition(nextRow, nextColumn) !== player) break;
 
                     count++;
                 }
@@ -70,9 +72,11 @@ export function hasWon(board: Board, player: Player): boolean {
 
     return false;
 }
-export function getLegalColumns(board: Board): number[] {
+// Hører til Board?
+export function getLegalColumns(board: BoardClass): number[] {
     return Array.from({ length: 7 }, (_, column) => column).filter(column => isLegalMove(board, column));
 }
-export function isLegalMove(board: Board, column: number): boolean {
-    return column >= 0 && column < 7 && board[0][column] === null;
+// Board
+export function isLegalMove(board: BoardClass, column: number): boolean {
+    return column >= 0 && column < 7 && board.getBoardPosition(0, column) === null;
 }

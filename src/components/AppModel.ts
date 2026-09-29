@@ -1,7 +1,8 @@
 // import { BaseComponent } from "./BaseComponent";
 import { isLegalMove, hasWon, chooseRobotColumn, getLegalColumns } from "./Robot";
-import { createBoardFromMoves } from "./Board";
+// import { createBoardFromMoves } from "./Board";
 import type { AppState, Game, Winner, Board } from "../types";
+import { BoardClass } from "./Board";
 
 export class AppModel /*extends BaseComponen*/ {
     private state: AppState = {
@@ -74,13 +75,16 @@ export class AppModel /*extends BaseComponen*/ {
         if (game.winner !== null) return;
         if (this.state.viewedMove !== game.moves.length) return;
 
-        let board = createBoardFromMoves(game.moves);
+        let board = new BoardClass();
+        board.createBoardFromMoves(game.moves);
+        // let board = createBoardFromMoves(game.moves);
 
         if (!isLegalMove(board, column)) return;
 
         // Spilleren er alltid rød
         game.moves.push(column);
-        board = createBoardFromMoves(game.moves);
+        board.createBoardFromMoves(game.moves);
+        // board = createBoardFromMoves(game.moves);
 
         if (hasWon(board, "red")) {
             this.finishGame(game, "red");
@@ -99,7 +103,7 @@ export class AppModel /*extends BaseComponen*/ {
             game.moves.push(robotColumn);
         }
 
-        board = createBoardFromMoves(game.moves);
+        board.createBoardFromMoves(game.moves);
 
         if (hasWon(board, "yellow")) {
             this.finishGame(game, "yellow");
@@ -113,11 +117,12 @@ export class AppModel /*extends BaseComponen*/ {
 
         this.state.viewedMove = game.moves.length;
 
-        function isBoardFull(board: Board): boolean {
+        function isBoardFull(board: BoardClass): boolean {
             return getLegalColumns(board).length === 0;
         }
     }
 
+    // State
     goToStart(): void {
         this.state.viewedMove = 0;
     }
@@ -135,6 +140,7 @@ export class AppModel /*extends BaseComponen*/ {
         const game = this.getSelectedGame();
         this.state.viewedMove = game.moves.length;
     }
+    //
 
     private findGame(gameId: number): Game {
         const game = this.state.games.find(game => game.id === gameId);
