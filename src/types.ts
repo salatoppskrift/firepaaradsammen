@@ -3,6 +3,7 @@ export type Winner = Player | "draw" | null;
 export type Cell = Player | null;
 export type Board = Cell[][];
 export type Page = "overview" | "game";
+// type ColumnNumber = 0 | 1 | 2 | 3 | 4 | 5 | 6;
 
 export type Game = {
     id: number;
