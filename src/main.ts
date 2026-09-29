@@ -1,24 +1,7 @@
-type Player = "red" | "yellow";
-type Winner = Player | "draw" | null;
-type Cell = Player | null;
-type Board = Cell[][];
-type Page = "overview" | "game";
-
-type Game = {
-    id: number;
-    startedAt: string;
-    finishedAt: string | null;
-    winner: Winner;
-    moves: number[];
-};
-
-type AppState = {
-    page: Page;
-    selectedGameId: number | null;
-    viewedMove: number;
-    games: Game[];
-};
-
+// ============================================================
+// TYPES FLYTTET
+// ============================================================
+import type {AppState, Winner, Player, Board, Game, Cell} from "./types";
 
 // ============================================================
 // APP MODEL
