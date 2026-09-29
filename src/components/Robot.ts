@@ -28,9 +28,13 @@ export function chooseRobotColumn(board: Board): number | null {
     }
 
     // 3. Foretrekk midten
-    const preferredColumns = [3, 2, 4, 1, 5, 0, 6];
+    // const preferredColumns = [3, 2, 4, 1, 5, 0, 6];
 
-    return preferredColumns.find(column => legalColumns.includes(column)) ?? legalColumns[0];
+    // return preferredColumns.find(column => legalColumns.includes(column)) ?? legalColumns[0];
+    
+    return preferredColumns([3, 2, 4, 1, 5, 0, 6]);
+    
+    function preferredColumns(columnArray : number[]) {return columnArray.find(column => legalColumns.includes(column)) ?? legalColumns[0]};
 }
 
 export function hasWon(board: Board, player: Player): boolean {
