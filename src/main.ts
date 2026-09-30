@@ -5,6 +5,7 @@ import { AppModel } from "./components/AppModel";
 import { isLegalMove } from "./components/Robot";
 import { BoardClass } from "./components/Board";
 import type {AppState, Board, Game, Cell} from "./types";
+import style from "./styles/style.css"
 
 // ============================================================
 // FLYTTET APP MODEL TIL EGEN FIL I COMPONENTS
@@ -62,7 +63,7 @@ function renderOverview(state: AppState): void {
 
 
 function renderGameCard(game: Game): string {
-    const board = (new BoardClass).createBoardFromMoves(game.moves);
+    const board = new BoardClass();
 
     let status: string;
 
@@ -82,7 +83,7 @@ function renderGameCard(game: Game): string {
 
     return `
         <article class="game-card">
-            ${renderBoard(board, false, true)}
+            ${renderBoard(board.createBoardFromMoves(game.moves), board, false, true)}
 
             <div class="game-info">
                 ${status}
@@ -102,7 +103,8 @@ function renderGamePage(state: AppState): void {
     const game = state.games.find(game => game.id === state.selectedGameId)!;
 
     const displayedMoves = game.moves.slice(0, state.viewedMove);
-    const board = (new BoardClass).createBoardFromMoves(displayedMoves);
+    const board = new BoardClass();
+    // const boardMoves = board.getBoardPosition();
 
     const isLatestMove = state.viewedMove === game.moves.length;
     const canPlay = game.winner === null && isLatestMove;
@@ -116,7 +118,7 @@ function renderGamePage(state: AppState): void {
 
             <section class="game">
                 ${renderGameStatus(game, state)}
-                ${renderBoard(board, canPlay, false)}
+                ${renderBoard(board.createBoardFromMoves(displayedMoves), board, canPlay, false)}
                 ${renderMoveNavigation(state.viewedMove, game.moves.length)}
             </section>
         </main>
@@ -147,10 +149,10 @@ function renderGameStatus(game: Game, state: AppState): string {
 }
 
 
-function renderBoard(board: Board, interactive: boolean, compact: boolean): string {
+function renderBoard(boardMoves: Board, boardClass: BoardClass, interactive: boolean, compact: boolean): string {
     const columns = Array.from({ length: 7 }, (_, columnIndex) => {
-        const cells = board.map(row => row[columnIndex]);
-        const legal = interactive && isLegalMove(board, columnIndex);
+        const cells = boardMoves.map(row => row[columnIndex]);
+        const legal = interactive && isLegalMove(boardClass, columnIndex);
 
         return `
             <div
