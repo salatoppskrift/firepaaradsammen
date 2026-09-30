@@ -1,5 +1,5 @@
 import { BoardClass } from "./Board";
-import type { Board, Player } from "../types";
+import type { Player } from "../types";
 export function chooseRobotColumn(board: BoardClass): number | null {
     const legalColumns = getLegalColumns(board);
     console.log(board);

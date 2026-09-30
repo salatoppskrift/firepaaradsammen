@@ -3,7 +3,7 @@
 // ============================================================
 import { AppModel } from "./components/AppModel";
 import { isLegalMove } from "./components/Robot";
-import { createBoardFromMoves } from "./components/Board";
+import { BoardClass } from "./components/Board";
 import type {AppState, Board, Game, Cell} from "./types";
 
 // ============================================================
@@ -62,7 +62,7 @@ function renderOverview(state: AppState): void {
 
 
 function renderGameCard(game: Game): string {
-    const board = createBoardFromMoves(game.moves);
+    const board = (new BoardClass).createBoardFromMoves(game.moves);
 
     let status: string;
 
@@ -102,7 +102,7 @@ function renderGamePage(state: AppState): void {
     const game = state.games.find(game => game.id === state.selectedGameId)!;
 
     const displayedMoves = game.moves.slice(0, state.viewedMove);
-    const board = createBoardFromMoves(displayedMoves);
+    const board = (new BoardClass).createBoardFromMoves(displayedMoves);
 
     const isLatestMove = state.viewedMove === game.moves.length;
     const canPlay = game.winner === null && isLatestMove;
