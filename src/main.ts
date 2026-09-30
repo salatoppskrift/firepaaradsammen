@@ -5,7 +5,7 @@ import { AppModel } from "./components/AppModel";
 import { isLegalMove } from "./components/Robot";
 import { BoardClass } from "./components/Board";
 import type {AppState, Board, Game, Cell} from "./types";
-import style from "./styles/style.css"
+import styles from "./styles/style.css";
 
 // ============================================================
 // FLYTTET APP MODEL TIL EGEN FIL I COMPONENTS
